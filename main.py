@@ -36,6 +36,7 @@ def init():
     glEnable(GL_DEPTH_TEST)  # Enable depth testing
 
 
+
 # Main loop
 init()
 w = 33.95
@@ -44,46 +45,49 @@ ground = Ground(w, h, 1)
 #plane = Plane(0, -3., 0, w, h)
 scene = Scene(display, ground, Rectangle3D(-w*20 / 2, -0.501, -h*20 / 2, w*20, 1, h*20), select)
 # Add multiple cameras at different positions
+
+m_height = 4.5
+
 scene.add_camera(
     Camera(
-        position=[12.5, 3.5, 24.4],
-        fov_width=30.0,
-        fov_height=20.0,
+        position=[12.5, m_height, 24.4],
+        fov_width=26.0,
+        fov_height=15.0,
         ground=ground,
-        plane=Plane(0, -3., 0, w, h),
+        plane=Plane(0, -m_height+0.5, 0, w, h),
         label="Hikvision",
         id=1
     )
 )
 scene.add_camera(
     Camera(
-        position=[12.5, 3.5, 24.4 - 7.5],
-        fov_width=30.0,
-        fov_height=20.0,
+        position=[12.5, m_height, 24.4 - 7.5],
+        fov_width=26.0,
+        fov_height=15.0,
         ground=ground,
-        plane=Plane(0, -3., 0, w, h),
+        plane=Plane(0, -m_height+0.5, 0, w, h),
         label="Hikvision",
         id=2
     )
 )
 scene.add_camera(
     Camera(
-        position=[12.5, 3.5, 24.4 - 7.5 - 5],
-        fov_width=30.0,
-        fov_height=20.0,
+        position=[12.5, m_height, 24.4 - 7.5 - 5],
+        fov_width=26.0,
+        fov_height=15.0,
         ground=ground,
-        plane=Plane(0, -3., 0, w, h),
+        plane=Plane(0, -m_height+0.5, 0, w, h),
         label="Hikvision",
         id=3
     )
 )
 scene.add_camera(
     Camera(
-        position=[12.5, 3.5, 24.4 - 7.5 - 5 - 6.5],
-        fov_width=30.0,
-        fov_height=20.0,
+        position=[12.5, m_height, 24.4 - 7.5 - 5 - 6.5],
+        fov_width=26.0,
+        fov_height=15.0,
         ground=ground,
-        plane=Plane(0, -3., 0, w, h),
+        plane=Plane(0, -m_height+0.5, 0, w, h),
         label="Hikvision",
         id=4
     )
@@ -91,72 +95,138 @@ scene.add_camera(
 
 scene.add_camera(
     Camera(
-        position=[12.5, 3.5, 24.4 - 7.5 - 5 - 6.5 -5],
-        fov_width=30.0,
-        fov_height=20.0,
+        position=[12.5, m_height, 24.4 - 7.5 - 5 - 6.5 -5],
+        fov_width=26.0,
+        fov_height=15.0,
         ground=ground,
-        plane=Plane(0, -3., 0, w, h),
+        plane=Plane(0, -m_height+0.5, 0, w, h),
         label="Hikvision",
         id=5
     )
 )
 
+# Horizontal coverage at m_height : 5.509 meters
+# Vertical coverage at 3.5 : 4.116 meters
+
+# scene.add_camera(
+#     Camera(
+#         position=[12.5-10, 3.5, 24.4],
+#         fov_width=35.0,
+#         fov_height=20.0,
+#         ground=ground,
+#         plane=Plane(0, -m_height+0.5, 0, w, h),
+#         label="QNV-C8083R",
+#         id=6
+#     )
+# )
+#
+# scene.add_camera(
+#     Camera(
+#         position=[12.5-10, 3.5, 24.4 -6],
+#         fov_width=35.0,
+#         fov_height=20.0,
+#         ground=ground,
+#         plane=Plane(0, -m_height+0.5, 0, w, h),
+#         label="QNV-C8083R",
+#         id=6
+#     )
+# )
+#
+# scene.add_camera(
+#     Camera(
+#         position=[12.5-10, 3.5, 24.4 -6*2],
+#         fov_width=35.0,
+#         fov_height=20.0,
+#         ground=ground,
+#         plane=Plane(0, -m_height+0.5, 0, w, h),
+#         label="QNV-C8083R",
+#         id=7
+#     )
+# )
+#
+# scene.add_camera(
+#     Camera(
+#         position=[12.5-10, 3.5, 24.4-6*3],
+#         fov_width=35.0,
+#         fov_height=20.0,
+#         ground=ground,
+#         plane=Plane(0, -m_height+0.5, 0, w, h),
+#         label="QNV-C8083R",
+#         id=8
+#     )
+# )
+#
+# scene.add_camera(
+#     Camera(
+#         position=[12.5-10, 3.5, 24.4-6*4],
+#         fov_width=35.0,
+#         fov_height=20.0,
+#         ground=ground,
+#         plane=Plane(0, -m_height+0.5, 0, w, h),
+#         label="QNV-C8083R",
+#         id=9
+#     )
+# )
+
+# Horizontal coverage at 3.5 : 7.0 meters
+# Vertical coverage at 3.5 : 4.592 meters
+
 scene.add_camera(
     Camera(
-        position=[12.5-10, 3.5, 24.4],
-        fov_width=35.0,
-        fov_height=20.0,
+        position=[12.5-10, m_height, 24.4],
+        fov_width=25.0,
+        fov_height=15.0,
         ground=ground,
-        plane=Plane(0, -3., 0, w, h),
-        label="New",
+        plane=Plane(0, -m_height+0.5, 0, w, h),
+        label="XNV-C7083R",
         id=6
     )
 )
 
 scene.add_camera(
     Camera(
-        position=[12.5-10, 3.5, 24.4 -6],
-        fov_width=35.0,
-        fov_height=20.0,
+        position=[12.5-10, m_height, 24.4 -6],
+        fov_width=25.0,
+        fov_height=15.0,
         ground=ground,
-        plane=Plane(0, -3., 0, w, h),
-        label="New",
+        plane=Plane(0, -m_height+0.5, 0, w, h),
+        label="XNV-C7083R",
         id=6
     )
 )
 
 scene.add_camera(
     Camera(
-        position=[12.5-10, 3.5, 24.4 -6*2],
-        fov_width=35.0,
-        fov_height=20.0,
+        position=[12.5-10, m_height, 24.4 -6*2],
+        fov_width=25.0,
+        fov_height=15.0,
         ground=ground,
-        plane=Plane(0, -3., 0, w, h),
-        label="New",
+        plane=Plane(0, -m_height+0.5, 0, w, h),
+        label="XNV-C7083R",
         id=7
     )
 )
 
 scene.add_camera(
     Camera(
-        position=[12.5-10, 3.5, 24.4-6*3],
-        fov_width=35.0,
-        fov_height=20.0,
+        position=[12.5-10, m_height, 24.4-6*3],
+        fov_width=25.0,
+        fov_height=15.0,
         ground=ground,
-        plane=Plane(0, -3., 0, w, h),
-        label="New",
+        plane=Plane(0, -m_height+0.5, 0, w, h),
+        label="XNV-C7083R",
         id=8
     )
 )
 
 scene.add_camera(
     Camera(
-        position=[12.5-10, 3.5, 24.4-6*4],
-        fov_width=35.0,
-        fov_height=20.0,
+        position=[12.5-10, m_height, 24.4-6*4],
+        fov_width=25.0,
+        fov_height=15.0,
         ground=ground,
-        plane=Plane(0, -3., 0, w, h),
-        label="New",
+        plane=Plane(0, -m_height+0.5, 0, w, h),
+        label="XNV-C7083R",
         id=9
     )
 )

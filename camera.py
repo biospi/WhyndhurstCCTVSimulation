@@ -132,7 +132,8 @@ class Camera:
         self.draw_intersection()
 
         glColor4f(0.0, 1.0, 0.0, 0.2)
-        # glDisable(GL_DEPTH_TEST)  # Enable depth testing
+        if "XNV" in self.label:
+            glColor4f(39/255, 168/255, 247/255, 0.2)
         self._draw_pyramid()
 
         glColor4f(1.0, 0.0, 0.0, 0.2)
@@ -163,8 +164,8 @@ class Camera:
         self.draw_intersection()
 
         glColor4f(0.0, 1.0, 0.0, 0.2)
-        if self.label == "New":
-            glColor4f(0.0, 0.0, 1.0, 0.2)
+        if "XNV" in self.label:
+            glColor4f(39/255, 168/255, 247/255, 0.2)
         # glDisable(GL_DEPTH_TEST)  # Enable depth testing
         self._draw_pyramid()
 
