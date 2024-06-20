@@ -1,6 +1,5 @@
 # Whyndhurst CCTV FoV Simulator
 This repository contains the source code and binaries for a 3D simulator of the field of views of the CCTV installed on farm.
-
 <div style="text-align:center">
   <img src="sceencapture.png" />
 </div>
