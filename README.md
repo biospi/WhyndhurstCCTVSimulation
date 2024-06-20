@@ -14,11 +14,11 @@ This repository contains the source code and binaries for a 3D simulator of the 
   <img src="key_layout.png"/>
 </div>
 
-| Key                     | Action                                   |
-|-------------------------|------------------------------------------|
+| Key                     | Action                                       |
+|-------------------------|----------------------------------------------|
 | W A S D                 | View translation left/right forward/backward |
-| Arrow keys              | View rotation                            |
-| I J K L                 | Camera tilt                              |
-| 1-9                     | Camera selection                         |
-| Mouse wheel             | Camera up/down                           |
-| Mouse left click + drag | Camera position                    |
+| Arrow keys              | View rotation                                |
+| I J K L U O             | Camera tilt/rotation                         |
+| 1-9                     | Camera selection                             |
+| Mouse wheel             | Camera up/down                               |
+| Mouse left click + drag | Camera position                              |

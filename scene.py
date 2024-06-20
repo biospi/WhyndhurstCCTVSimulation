@@ -111,7 +111,8 @@ class Scene:
 
     def draw(self):
         self.ground.draw()
-        self.rectangle.draw()
+        for r in self.rectangle:
+            r.draw()
         # glDisable(GL_DEPTH_TEST)
         for i, camera in enumerate(self.cameras):
             if i == self.select:
@@ -119,7 +120,7 @@ class Scene:
             else:
                 camera.draw()
             camera_position = camera.get_position()
-            texture_id, width, height = self.render_text(f"{camera_position[1]:0.2f} {camera.label} {camera.id}", i)
+            texture_id, width, height = self.render_text(f"{camera_position[1]:0.2f}|{camera.label}|{camera.id}", i)
             self.draw_text(
                 texture_id,
                 width,

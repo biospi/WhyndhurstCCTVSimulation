@@ -1,4 +1,5 @@
 from OpenGL.GL import *
+import math
 
 
 class Plane:
@@ -26,10 +27,10 @@ class Plane:
             (self.x - self.half_width, self.y, self.z + self.half_height),
         ]
 
-
     def draw(self):
         # Draw the plane (opaque)
         # glEnable(GL_BLEND)
+
         glColor3f(0.0, 0.5, 1.0)
         glBegin(GL_QUADS)
         for vertex in self.plane_vertices:

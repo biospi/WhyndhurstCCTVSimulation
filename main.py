@@ -1,3 +1,5 @@
+import os
+
 import pygame
 from pygame.locals import *
 from OpenGL.GL import *
@@ -12,6 +14,7 @@ from ground import Ground
 from plane import Plane
 from rectangle3D import Rectangle3D
 from scene import Scene
+import json
 
 # Initialize Pygame and set up the window
 pygame.init()
@@ -43,7 +46,15 @@ w = 33.95
 h = 55.65
 ground = Ground(w, h, 1)
 #plane = Plane(0, -3., 0, w, h)
-scene = Scene(display, ground, Rectangle3D(-w*20 / 2, -0.501, -h*20 / 2, w*20, 1, h*20), select)
+rec_list = [Rectangle3D(-w*20 / 2, -0.501, -h*20 / 2, w*20, 1, h*20)]
+
+cow1 = Rectangle3D(15,0,24, 1,1.8,2.5, True)
+rec_list.append(cow1)
+
+cow2 = Rectangle3D(7,0,24, 2.5,1.8,1, True)
+rec_list.append(cow2)
+
+scene = Scene(display, ground, rec_list, select)
 # Add multiple cameras at different positions
 
 m_height = 4.5
@@ -115,7 +126,7 @@ scene.add_camera(
 #         fov_height=20.0,
 #         ground=ground,
 #         plane=Plane(0, -m_height+0.5, 0, w, h),
-#         label="QNV-C8083R",
+#         label="QNV-C8012",
 #         id=6
 #     )
 # )
@@ -127,7 +138,7 @@ scene.add_camera(
 #         fov_height=20.0,
 #         ground=ground,
 #         plane=Plane(0, -m_height+0.5, 0, w, h),
-#         label="QNV-C8083R",
+#         label="QNV-C8012",
 #         id=6
 #     )
 # )
@@ -139,7 +150,7 @@ scene.add_camera(
 #         fov_height=20.0,
 #         ground=ground,
 #         plane=Plane(0, -m_height+0.5, 0, w, h),
-#         label="QNV-C8083R",
+#         label="QNV-C8012",
 #         id=7
 #     )
 # )
@@ -151,7 +162,7 @@ scene.add_camera(
 #         fov_height=20.0,
 #         ground=ground,
 #         plane=Plane(0, -m_height+0.5, 0, w, h),
-#         label="QNV-C8083R",
+#         label="QNV-C8012",
 #         id=8
 #     )
 # )
@@ -163,7 +174,7 @@ scene.add_camera(
 #         fov_height=20.0,
 #         ground=ground,
 #         plane=Plane(0, -m_height+0.5, 0, w, h),
-#         label="QNV-C8083R",
+#         label="QNV-C8012",
 #         id=9
 #     )
 # )
@@ -174,11 +185,11 @@ scene.add_camera(
 scene.add_camera(
     Camera(
         position=[12.5-10, m_height, 24.4],
-        fov_width=25.0,
-        fov_height=15.0,
+        fov_width=35.0,
+        fov_height=20.0,
         ground=ground,
         plane=Plane(0, -m_height+0.5, 0, w, h),
-        label="XNV-C7083R",
+        label="QNV-C8012",
         id=6
     )
 )
@@ -186,50 +197,81 @@ scene.add_camera(
 scene.add_camera(
     Camera(
         position=[12.5-10, m_height, 24.4 -6],
-        fov_width=25.0,
-        fov_height=15.0,
+        fov_width=35.0,
+        fov_height=20.0,
         ground=ground,
         plane=Plane(0, -m_height+0.5, 0, w, h),
-        label="XNV-C7083R",
-        id=6
-    )
-)
-
-scene.add_camera(
-    Camera(
-        position=[12.5-10, m_height, 24.4 -6*2],
-        fov_width=25.0,
-        fov_height=15.0,
-        ground=ground,
-        plane=Plane(0, -m_height+0.5, 0, w, h),
-        label="XNV-C7083R",
+        label="QNV-C8012",
         id=7
     )
 )
 
 scene.add_camera(
     Camera(
-        position=[12.5-10, m_height, 24.4-6*3],
-        fov_width=25.0,
-        fov_height=15.0,
+        position=[12.5-10, m_height, 24.4 -6*2],
+        fov_width=35.0,
+        fov_height=20.0,
         ground=ground,
         plane=Plane(0, -m_height+0.5, 0, w, h),
-        label="XNV-C7083R",
+        label="QNV-C8012",
         id=8
     )
 )
 
 scene.add_camera(
     Camera(
-        position=[12.5-10, m_height, 24.4-6*4],
-        fov_width=25.0,
-        fov_height=15.0,
+        position=[12.5-10, m_height, 24.4-6*3],
+        fov_width=35.0,
+        fov_height=20.0,
         ground=ground,
         plane=Plane(0, -m_height+0.5, 0, w, h),
-        label="XNV-C7083R",
+        label="QNV-C8012",
         id=9
     )
 )
+
+scene.add_camera(
+    Camera(
+        position=[12.5-10, m_height, 24.4-6*4],
+        fov_width=35.0,
+        fov_height=20.0,
+        ground=ground,
+        plane=Plane(0, -m_height+0.5, 0, w, h),
+        label="QNV-C8012",
+        id=10
+    )
+)
+
+# Camera Model	Sensor Size	Focal Length	Height (m)	Horizontal Coverage (m)	Vertical Coverage (m)
+# Hikvision DS-2CD5546G0-IZHS	1/1.8"	2.8 mm	4.5	11.709	8.748
+# Hanwha Vision QNV-C8012	1/2.8"	2.4 mm	4.5	16.236	9.243
+
+
+file_path = 'data.json'
+
+# Check if the file exists
+if os.path.exists(file_path):
+    # Read the dictionary from the file
+    with open(file_path, 'r') as f:
+        try:
+            DATA = json.load(f)
+            print("Data loaded from the file:", DATA)
+            print("load last config...")
+            data_ = list(DATA.values())
+            for cam, d in zip(scene.cameras, data_):
+                cam.position[0] = d["x"]
+                cam.position[1] = d["y"]
+                cam.position[2] = d["z"]
+                cam.rot = d["rotation"]
+                cam.pyramid_vertices = cam.rotate_pyramid(cam.pyramid_vertices, -d["rotation"], 2)
+                cam.plane.y = d["plane_y"]
+        except Exception as e:
+            print(e)
+            os.remove(file_path)
+else:
+    print(f"The file {file_path} does not exist.")
+    DATA = {}
+
 
 running = True
 while running:
@@ -265,7 +307,6 @@ while running:
     else:
         pressed_last_frame = False  # Reset the flag if the key is not pressed
 
-
     if keys[pygame.K_i]:
         scene.cameras[scene.select].pyramid_vertices = scene.cameras[scene.select].rotate_pyramid(scene.cameras[scene.select].pyramid_vertices, 0.1, 1)
     if keys[pygame.K_k]:
@@ -274,6 +315,13 @@ while running:
         scene.cameras[scene.select].pyramid_vertices = scene.cameras[scene.select].rotate_pyramid(scene.cameras[scene.select].pyramid_vertices, 0.1, 0)
     if keys[pygame.K_l]:
         scene.cameras[scene.select].pyramid_vertices = scene.cameras[scene.select].rotate_pyramid(scene.cameras[scene.select].pyramid_vertices, -0.1, 0)
+
+    if keys[pygame.K_u]:
+        scene.cameras[scene.select].pyramid_vertices = scene.cameras[scene.select].rotate_pyramid(scene.cameras[scene.select].pyramid_vertices, 0.5, 2)
+        scene.cameras[scene.select].rot -= 0.5
+    if keys[pygame.K_o]:
+        scene.cameras[scene.select].pyramid_vertices = scene.cameras[scene.select].rotate_pyramid(scene.cameras[scene.select].pyramid_vertices, -0.5, 2)
+        scene.cameras[scene.select].rot += 0.5
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -294,9 +342,17 @@ while running:
                 # Move camera down
                 scene.cameras[scene.select].position[1] -= 0.1
                 scene.cameras[scene.select].plane.y += 0.1
-    scene.cameras[scene.select].plane.update()
+                #self.update()
 
+    scene.cameras[scene.select].plane.update()
     scene.handle_camera_movement()
+
+    pos = scene.cameras[scene.select].position
+    DATA[scene.select] = {"id":scene.cameras[scene.select].id, "plane_y":scene.cameras[scene.select].plane.y, "x":pos[0], "y":pos[1], "z":pos[2], "height": pos[1], "rotation": scene.cameras[scene.select].rot}
+
+    with open('data.json', 'w') as f:
+        json.dump(DATA, f, indent=4)
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     scene.draw()
     pygame.display.flip()

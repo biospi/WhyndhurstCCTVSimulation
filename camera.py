@@ -2,6 +2,7 @@ import numpy as np
 import pygame
 from OpenGL.GL import *
 from OpenGL.GLU import *
+import math
 
 
 class Camera:
@@ -12,6 +13,7 @@ class Camera:
         self.plane = plane
         self.label = label
         self.id = id
+        self.rot = 0
         # self.rectangle = Rectangle3D(0,0,0,1,1, 1)
         self.fov_height = fov_height
         self.ground_distance = position[1]
@@ -71,6 +73,18 @@ class Camera:
                 [np.sin(angle_radians), np.cos(angle_radians), 0],
                 [0, 0, 1]
             ])
+        if direction == 2:
+            rotation_matrix = np.array([
+                [np.cos(angle_radians), 0, np.sin(angle_radians)],
+                [0, 1, 0],
+                [-np.sin(angle_radians), 0, np.cos(angle_radians)]
+            ])
+        if direction == 3:
+            rotation_matrix = np.array([
+                [np.cos(angle_radians), 0, np.sin(angle_radians)],
+                [0, 1, 0],
+                [-np.sin(angle_radians), 0, np.cos(angle_radians)]
+            ])
 
         # The top vertex (assuming the first vertex in the list) remains fixed
         top_vertex = vertices[0]
@@ -92,12 +106,49 @@ class Camera:
         faces = [(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 1), (1, 2, 3, 4)]
         return faces
 
-    def draw_intersection(self):
+    # def draw_intersection(self):
+    #     glDisable(GL_DEPTH_TEST)
+    #     # Draw the slicing section
+    #     glColor3f(1.0, 0.0, 0.0)  # Red color for the intersection section
+    #     glBegin(GL_LINES)
+    #     y_plane = self.plane.plane_vertices[0][1]
+    #     for face in self._get_pyramid_faces():
+    #         for i in range(len(face)):
+    #             v1 = self._get_pyramid_vertices()[face[i]]
+    #             v2 = self._get_pyramid_vertices()[face[(i + 1) % len(face)]]
+    #             if ((y_plane < v1[1] and y_plane > v2[1]) or (v1[1] < y_plane and v2[1] > y_plane)):
+    #                 # Interpolate to find the intersection point
+    #                 t = (y_plane - v1[1]) / (v2[1] - v1[1])
+    #                 intersection_point = (
+    #                     v1[0] + t * (v2[0] - v1[0]),
+    #                     y_plane,
+    #                     v1[2] + t * (v2[2] - v1[2]),
+    #                 )
+    #                 glVertex3fv(intersection_point)
+    #     glEnd()
+    #     glColor3f(1.0, 1.0, 1.0)
+    #     glEnable(GL_DEPTH_TEST)
+
+    def rotate_point_around_y(self, point, angle_degrees):
+        angle_radians = math.radians(angle_degrees)
+        cos_angle = math.cos(angle_radians)
+        sin_angle = math.sin(angle_radians)
+
+        x, y, z = point
+        # Rotate around Y axis
+        x_rotated = x * cos_angle - z * sin_angle
+        z_rotated = x * sin_angle + z * cos_angle
+
+        return (x_rotated, y, z_rotated)
+
+    def draw_intersection(self, rotation_angle):
         glDisable(GL_DEPTH_TEST)
         # Draw the slicing section
         glColor3f(1.0, 0.0, 0.0)  # Red color for the intersection section
         glBegin(GL_LINES)
         y_plane = self.plane.plane_vertices[0][1]
+        intersection_points = []
+
         for face in self._get_pyramid_faces():
             for i in range(len(face)):
                 v1 = self._get_pyramid_vertices()[face[i]]
@@ -110,7 +161,12 @@ class Camera:
                         y_plane,
                         v1[2] + t * (v2[2] - v1[2]),
                     )
-                    glVertex3fv(intersection_point)
+                    rotated_point = self.rotate_point_around_y(intersection_point, rotation_angle)
+                    intersection_points.append(rotated_point)
+
+        for point in intersection_points:
+            glVertex3fv(point)
+
         glEnd()
         glColor3f(1.0, 1.0, 1.0)
         glEnable(GL_DEPTH_TEST)
@@ -129,10 +185,10 @@ class Camera:
         # Draw the FOV pyramid
         glPushMatrix()
         glTranslatef(*self.position)
-        self.draw_intersection()
+        self.draw_intersection(self.rot)
 
         glColor4f(0.0, 1.0, 0.0, 0.2)
-        if "XNV" in self.label:
+        if "QNV-C8012" in self.label:
             glColor4f(39/255, 168/255, 247/255, 0.2)
         self._draw_pyramid()
 
@@ -161,10 +217,10 @@ class Camera:
         # Draw the FOV pyramid
         glPushMatrix()
         glTranslatef(*self.position)
-        self.draw_intersection()
+        self.draw_intersection(self.rot)
 
         glColor4f(0.0, 1.0, 0.0, 0.2)
-        if "XNV" in self.label:
+        if "QNV-C8012" in self.label:
             glColor4f(39/255, 168/255, 247/255, 0.2)
         # glDisable(GL_DEPTH_TEST)  # Enable depth testing
         self._draw_pyramid()
